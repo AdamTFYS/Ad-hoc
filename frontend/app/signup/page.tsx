@@ -4,9 +4,9 @@ import { signup } from "./actions";
 export default async function SignupPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; email?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, email } = await searchParams;
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
@@ -29,6 +29,7 @@ export default async function SignupPage({
               name="email"
               type="email"
               required
+              defaultValue={email ?? ""}
               className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-accent"
               placeholder="you@example.com"
             />
