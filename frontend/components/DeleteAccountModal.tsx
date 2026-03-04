@@ -66,7 +66,7 @@ export default function DeleteAccountModal({ open, onClose }: DeleteAccountModal
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={handleClose} />
 
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-md rounded-xl border border-border bg-surface-1 p-6 shadow-xl">
+      <div className="relative z-10 w-full max-w-md max-h-[90vh] overflow-y-auto rounded-xl border border-border bg-surface-1 p-6 shadow-xl">
         {step === 1 ? (
           <>
             <h2 className="text-lg font-semibold text-foreground">
