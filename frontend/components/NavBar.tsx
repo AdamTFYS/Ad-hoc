@@ -5,11 +5,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import DeleteAccountModal from "./DeleteAccountModal";
 
 export default function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -67,14 +69,26 @@ export default function NavBar() {
             );
           })}
         {user && (
-          <button
-            onClick={handleLogout}
-            className="ml-auto text-sm font-medium text-muted transition-colors hover:text-foreground"
-          >
-            Logout
-          </button>
+          <div className="ml-auto flex items-center gap-4">
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="text-sm font-medium text-red-500 transition-colors hover:text-red-400"
+            >
+              Delete Account
+            </button>
+            <button
+              onClick={handleLogout}
+              className="text-sm font-medium text-muted transition-colors hover:text-foreground"
+            >
+              Logout
+            </button>
+          </div>
         )}
       </div>
+      <DeleteAccountModal
+        open={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+      />
     </nav>
   );
 }

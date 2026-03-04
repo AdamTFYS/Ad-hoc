@@ -9,6 +9,7 @@ import semesterRouter from "./routes/semesters.js";
 import periodRouter from "./routes/periods.js";
 import studyGoalRouter from "./routes/study-goals.js";
 import documentRouter from "./routes/documents.js";
+import accountRouter from "./routes/account.js";
 
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
@@ -45,6 +46,7 @@ app.use("/periods", periodRouter);
 app.use("/study-goals", studyGoalRouter);
 // Top-level document file route for signed URL redirects
 app.use("/documents", documentRouter);
+app.use("/account", accountRouter);
 
 // Global error handler
 app.use(

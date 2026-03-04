@@ -251,6 +251,13 @@ export const api = {
   deletePeriod: (id: string) =>
     request<void>(`/periods/${id}`, { method: "DELETE" }),
 
+  // Account
+  deleteAccount: (reason: string, details?: string) =>
+    request<void>("/account", {
+      method: "DELETE",
+      body: JSON.stringify({ reason, details }),
+    }),
+
   // AI (Gemini) — calls Next.js API routes (same origin, cookies handle auth)
   correctExam: async (documentId: string, description?: string) => {
     const res = await fetch("/api/correct-exam", {

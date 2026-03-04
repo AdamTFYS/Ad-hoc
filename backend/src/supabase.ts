@@ -16,3 +16,12 @@ export function createSupabaseClient(accessToken: string): SupabaseClient {
     },
   });
 }
+
+/**
+ * Create a Supabase admin client using the service role key.
+ * Bypasses RLS and can perform admin operations like deleting auth users.
+ */
+export function createSupabaseAdminClient(): SupabaseClient {
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  return createClient(supabaseUrl, serviceRoleKey);
+}
