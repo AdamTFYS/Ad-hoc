@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { login } from "./actions";
+import AuthBackground from "@/components/AuthBackground";
 
 export default async function LoginPage({
   searchParams,
@@ -9,8 +10,8 @@ export default async function LoginPage({
   const { error, message } = await searchParams;
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-sm rounded-xl border border-border bg-surface-1 p-8 animate-slide-up">
+    <AuthBackground>
+      <div className="w-full max-w-sm rounded-xl border border-border bg-surface-1/90 backdrop-blur-sm p-8 animate-slide-up">
         <h1 className="mb-1 text-2xl font-bold">Sign in</h1>
         <p className="mb-6 text-sm text-muted">
           Enter your credentials to continue
@@ -66,6 +67,6 @@ export default async function LoginPage({
           </Link>
         </p>
       </div>
-    </div>
+    </AuthBackground>
   );
 }
