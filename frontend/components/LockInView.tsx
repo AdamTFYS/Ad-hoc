@@ -6,6 +6,7 @@ import Input from "@/components/ui/Input";
 import LockOverlay from "@/components/LockOverlay";
 import { motivationalQuotes } from "@/components/motivationalQuotes";
 import { api } from "@/lib/api";
+import { computeProgress } from "@/lib/progress";
 import type { Goal, Task } from "@/types";
 
 type Phase = "setup" | "running" | "completed";
@@ -33,6 +34,9 @@ export default function LockInView() {
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
   const [sessionTasks, setSessionTasks] = useState<SessionTask[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [sessionGoalTasks, setSessionGoalTasks] = useState<Task[]>([]);
+  const baseProgressRef = useRef(0);
 
   const endTimeRef = useRef(0);
   const quoteRef = useRef("");
@@ -82,8 +86,19 @@ export default function LockInView() {
     setRemainingSeconds(seconds);
     endTimeRef.current = Date.now() + seconds * 1000;
     setSessionTasks(buildSessionTasks());
+
+    // Capture goal tasks and base progress for Sisyphus animation
+    const firstSelectedId = [...selectedTaskIds][0];
+    if (firstSelectedId) {
+      const parentGoal = goals.find((g) => g.tasks.some((t) => t.id === firstSelectedId));
+      if (parentGoal) {
+        setSessionGoalTasks(parentGoal.tasks);
+        baseProgressRef.current = computeProgress(parentGoal.tasks);
+      }
+    }
+
     setPhase("running");
-  }, [buildSessionTasks]);
+  }, [buildSessionTasks, goals, selectedTaskIds]);
 
   const handleStartCustom = () => {
     const h = parseInt(customHours) || 0;
@@ -159,6 +174,8 @@ export default function LockInView() {
         onConfirmQuit={handleQuitConfirm}
         minutesLeft={minutesLeft}
         quoteText={quoteRef.current}
+        goalTasks={sessionGoalTasks}
+        baseProgress={baseProgressRef.current}
       />
     );
   }

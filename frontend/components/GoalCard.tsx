@@ -11,6 +11,7 @@ import ProgressBar from "@/components/ProgressBar";
 import TaskItem from "@/components/TaskItem";
 import AddTaskForm from "@/components/AddTaskForm";
 import Button from "@/components/ui/Button";
+import SisyphusGoalCard from "@/components/sisyphus/SisyphusGoalCard";
 
 type DragHandleProps = {
   attributes: DraggableAttributes;
@@ -158,6 +159,8 @@ export default function GoalCard({
 
       {!minimised && (
         <>
+          <SisyphusGoalCard tasks={goal.tasks} className="mt-2" />
+
           <DndContext
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}

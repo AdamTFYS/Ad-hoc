@@ -2,6 +2,8 @@
 
 import Button from "@/components/ui/Button";
 import type { SessionTask } from "@/components/LockInView";
+import type { Task } from "@/types";
+import SisyphusLockIn from "@/components/sisyphus/SisyphusLockIn";
 
 type LockOverlayProps = {
   remainingSeconds: number;
@@ -16,6 +18,8 @@ type LockOverlayProps = {
   onConfirmQuit: () => void;
   minutesLeft: number;
   quoteText: string;
+  goalTasks?: Task[];
+  baseProgress?: number;
 };
 
 function formatTime(seconds: number) {
@@ -111,6 +115,8 @@ export default function LockOverlay({
   onConfirmQuit,
   minutesLeft,
   quoteText,
+  goalTasks,
+  baseProgress = 0,
 }: LockOverlayProps) {
   const elapsed = totalSeconds - remainingSeconds;
   const progress = totalSeconds > 0 ? elapsed / totalSeconds : 0;
@@ -200,6 +206,17 @@ export default function LockOverlay({
           <span className="animate-pulse-dot inline-block h-2 w-2 rounded-full bg-accent" />
           <span className="text-sm">Locked in</span>
         </div>
+
+        {/* Sisyphus animation */}
+        {goalTasks && goalTasks.length > 0 && (
+          <SisyphusLockIn
+            tasks={goalTasks}
+            baseProgress={baseProgress}
+            sessionProgress={totalSeconds > 0 ? (totalSeconds - remainingSeconds) / totalSeconds : 0}
+            isRunning={!completed}
+            completed={completed}
+          />
+        )}
 
         {/* Tasks checklist */}
         <TaskList tasks={tasks} onToggle={onToggleTask} />
